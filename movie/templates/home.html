@@ -13,18 +13,31 @@
 
   <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for movie in movies %}
-    <div class="card" style="width: 18rem">
-      <img src="{{movie.img.url}}" class="card-img-top" />
-      <div class="card-body">
-        <h5 class="card-title">{{movie.title}}</h5>
-        <p class="card-text">{{movie.description}}</p>
-        <p class="card-text">{{movie.genre}}</p>
-        <p class="card-text">{{movie.year}}</p>
-        <a href="{{movie.url}}" class="btn btn-primary">Movie Link</a>
+    <div v-for="movie in movies" class="col">
+      <div class="card" style="width: 25rem">
+        <img src="{{movie.img.url}}" class="card-img-top" />
+        <div class="card-body">
+          <h5 class="card-title">{{movie.title}}</h5>
+          <p class="card-text">{{movie.description}}</p>
+          <p class="card-text">{{movie.genre}}</p>
+          <p class="card-text">{{movie.year}}</p>
+          <a href="{{movie.url}}" class="btn btn-primary">Movie Link</a>
+        </div>
       </div>
     </div>
     {% endfor %}
   </div>
+</div>
+
+<h2></h2>
+<from action="#">
+  <div>
+    <label for="email">Enter email:</label>
+    <input type="email">
+  </div>
+  <button>Sign up</button>
+</from>
+
 </div>
 
 {% endblock content %}

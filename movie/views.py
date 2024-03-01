@@ -28,12 +28,16 @@ def about(request):
 def stadistics_view(request):
     matplotlib.use('Agg')
     years = Movie.objects.values_list('year', flat=True).distinct().order_by('year')
+
     movie_counts_by_year = {}
     for year in years:
-        if year in movie_counts_by_year:
-            movie_counts_by_year[year] += 1
+        if year :
+            movie_in_year = Movie.objects.filter(year=year)
         else:
-            movie_counts_by_year[year] = 1
+            movie_in_year = Movie.objects.filter(year__isnull=True)
+            year = "None"
+        count = movie_in_year.count()
+        movie_counts_by_year[year] = count
 
     bar_width = 0.5
     bar_positions = range(len(movie_counts_by_year))
@@ -46,7 +50,7 @@ def stadistics_view(request):
     plt.xticks(bar_positions, movie_counts_by_year.keys(), rotation=90)
 
     plt.subplots_adjust(bottom=0.3)
-
+    """
     buffer = io.BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
@@ -54,6 +58,19 @@ def stadistics_view(request):
 
     image_png = buffer.getvalue()
     buffer.close()
-    graphic = base64.b64decode(image_png).decode('latin-1')
+    
+    graphic = base64.b64decode(image_png).decode('utf-8', errors='replace')
+
+    return render(request, 'statistics.html', {'graphic': graphic})
+    """
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    plt.close()
+
+    image_png = buffer.getvalue()
+    buffer.close()
+    graphic = base64.b64encode(image_png)
+    graphic = graphic.decode('utf-8')
 
     return render(request, 'statistics.html', {'graphic': graphic})
